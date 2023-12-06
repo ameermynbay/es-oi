@@ -1,0 +1,9 @@
+[
+    { "id": 1, "subjectId": 1, "title": "Algebra Basics" },
+    { "id": 2, "subjectId": 1, "title": "Geometry Fundamentals" },
+    { "id": 3, "subjectId": 2, "title": "Introduction to Cells" },
+    { "id": 4, "subjectId": 2, "title": "Genetics Principles" },
+    { "id": 5, "subjectId": 3, "title": "Newton's Laws of Motion" },
+    { "id": 6, "subjectId": 3, "title": "Introduction to Thermodynamics" }
+]
+  
