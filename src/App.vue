@@ -1,15 +1,17 @@
 <template>
-  <div id="app">
+  <div class="topic-screen">
     <AppNavbar @subjectSelected="updateSelectedSubject" />
 
     <div class="content-container">
       <router-view></router-view>
-      
-      <TopicList :subjectId="selectedSubjectId" @videoSelected="playVideo" v-if="selectedSubjectId" />
 
-      <div v-if="selectedVideoLink" class="video-container">
-        <iframe :src="selectedVideoLink" width="640" height="360" frameborder="0" allowfullscreen></iframe>
-      </div>
+      <TopicList :subjectId="selectedSubjectId" @topicSelected="playTopic" v-if="selectedSubjectId" />
+
+      <TopicVideoPlayer
+        :selectedVideoLink="selectedVideoLink"
+        :selectedSubjectName="selectedSubjectName"
+        v-if="selectedVideoLink"
+      />
     </div>
   </div>
 </template>
@@ -17,27 +19,56 @@
 <script>
 import AppNavbar from './components/Navbar.vue';
 import TopicList from './components/TopicList.vue';
+import TopicVideoPlayer from './components/TopicVideoPlayer.vue';
+import axios from 'axios';
 
 export default {
-  name: 'App',
+  name: 'TopicScreen',
   components: {
     AppNavbar,
     TopicList,
+    TopicVideoPlayer,
   },
   data() {
     return {
       selectedSubjectId: null,
       selectedVideoLink: null,
+      selectedSubjectName: null,
     };
   },
   methods: {
-    updateSelectedSubject(subjectId) {
+    updateSelectedSubject(subjectId, subjectName) {
       this.selectedSubjectId = subjectId;
       this.selectedVideoLink = null; // Reset the selected video link when the subject changes
+      this.selectedSubjectName = subjectName;
     },
-    playVideo(videoLink) {
-      this.selectedVideoLink = videoLink;
+    playTopic(topic) {
+      this.selectedVideoLink = topic.link;
+      this.selectedSubjectName = topic.title;
     },
+    async fetchTopicDetails(topicId) {
+      try {
+        const response = await axios.get(`http://localhost:3001/topics/${topicId}`);
+        const { name, link } = response.data;
+        this.selectedSubjectName = name;
+        this.selectedVideoLink = link;
+      } catch (error) {
+        console.error('Error fetching topic details:', error);
+      }
+    },
+  },
+  watch: {
+    $route(to) {
+      // Update selectedSubjectId and fetch topic details when the route changes
+      this.selectedSubjectId = to.params.subjectId;
+      this.fetchTopicDetails(to.params.topicId);
+    },
+  },
+  beforeRouteUpdate(to, from, next) {
+    // Ensure the route is updated before fetching topic details
+    this.selectedSubjectId = to.params.subjectId;
+    this.fetchTopicDetails(to.params.topicId);
+    next();
   },
 };
 </script>
@@ -62,7 +93,7 @@ a:hover {
   color: #555; /* Change the link color on hover if desired */
 }
 
-#app {
+.topic-screen {
   display: flex;
   flex-direction: column; /* Make the main container a column layout */
   height: 100vh; /* Set the height to 100% of the viewport */
@@ -74,10 +105,8 @@ a:hover {
   flex: 1; /* Take up all available space in the main container */
 }
 
-/* Additional styling for TopicList and Video containers if needed */
 .topic-list {
   margin-left: auto; /* Push the topic list to the right */
-  padding: 20px;
   background-color: #f0f0f0;
   width: 200px;
   height: 100%;
@@ -85,9 +114,4 @@ a:hover {
 }
 
 /* Other styles remain unchanged */
-
-
-.video-container {
-  flex: 1; /* Take up remaining space */
-}
 </style>

@@ -2,7 +2,7 @@
   <div class="topic-list">
     <h2>Topics</h2>
     <ul>
-      <li v-for="topic in topics" :key="topic.id" @click="playVideo(topic.link)">
+      <li v-for="topic in topics" :key="topic.id" @click="selectTopic(topic)">
         {{ topic.title }}
       </li>
     </ul>
@@ -35,28 +35,27 @@ export default {
         this.topics = response.data.map(topic => ({
           id: topic.id,
           title: topic.title,
-          link: topic.link, // Add the link property
+          link: topic.link,
         }));
       } catch (error) {
         console.error('Error fetching topics:', error);
       }
     },
-    playVideo(videoLink) {
-      // Emit an event to notify the parent component (App.vue) about the selected video link
-      this.$emit('videoSelected', videoLink);
+    selectTopic(topic) {
+      this.$emit('topicSelected', topic);
     },
   },
 };
 </script>
 
+
 <style>
 .topic-list {
-  position: relative;
-  padding: 2% 5%;
+  padding: 1% 3%;
   background-color: #f0f0f0;
   width: 200px;
   height: 100%;
-  overflow-y: auto; /* Enable vertical scrolling if the list is too long */
+  overflow-y: auto;
 }
 
 ul {
@@ -67,16 +66,16 @@ ul {
 
 li {
   margin-bottom: 10px;
+  cursor: pointer; /* Set cursor to pointer during hover */
+  transition: color 0.3s; /* Smooth color transition */
 }
 
-/* Additional styling for links if needed */
-router-link {
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-router-link:hover {
+li:hover {
   text-decoration: underline;
+}
+
+/* Style for selected topic */
+li.selected {
+  color: #555; /* Darker grey color for selected topic */
 }
 </style>
