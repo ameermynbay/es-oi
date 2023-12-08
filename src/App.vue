@@ -3,15 +3,16 @@
     <AppNavbar @subjectSelected="updateSelectedSubject" />
 
     <div class="content-container">
+      <div class="topic-content">
+        <TopicVideoPlayer
+          :selectedVideoLink="selectedVideoLink"
+          :selectedSubjectName="selectedSubjectName"
+        />
+
+        <TopicList :subjectId="selectedSubjectId" @topicSelected="playTopic" v-if="selectedSubjectId" />
+      </div>
+
       <router-view></router-view>
-
-      <TopicList :subjectId="selectedSubjectId" @topicSelected="playTopic" v-if="selectedSubjectId" />
-
-      <TopicVideoPlayer
-        :selectedVideoLink="selectedVideoLink"
-        :selectedSubjectName="selectedSubjectName"
-        v-if="selectedVideoLink"
-      />
     </div>
   </div>
 </template>
@@ -105,12 +106,22 @@ a:hover {
   flex: 1; /* Take up all available space in the main container */
 }
 
+.topic-video-player {
+  flex: 1; /* Take up all available space in the left */
+  margin-right: 10px; /* Add some margin between TopicVideoPlayer and TopicList */
+}
+
+.topic-content {
+  display: flex;
+  flex: 1; /* Take up all available space in the content container */
+}
+
 .topic-list {
-  margin-left: auto; /* Push the topic list to the right */
   background-color: #f0f0f0;
   width: 200px;
   height: 100%;
   overflow-y: auto;
+  margin-left: auto; /* Push TopicList to the most right side */
 }
 
 /* Other styles remain unchanged */

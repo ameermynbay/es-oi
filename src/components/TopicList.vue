@@ -2,7 +2,7 @@
   <div class="topic-list">
     <h2>Topics</h2>
     <ul>
-      <li v-for="topic in topics" :key="topic.id" @click="selectTopic(topic)">
+      <li v-for="topic in topics" :key="topic.id" @click="selectTopic(topic)" :class="{ 'selected': topic === selectedTopic }">
         {{ topic.title }}
       </li>
     </ul>
@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       topics: [],
+      selectedTopic: null, // Track the selected topic
     };
   },
   watch: {
@@ -42,12 +43,12 @@ export default {
       }
     },
     selectTopic(topic) {
+      this.selectedTopic = topic; // Update the selected topic
       this.$emit('topicSelected', topic);
     },
   },
 };
 </script>
-
 
 <style>
 .topic-list {
@@ -76,6 +77,6 @@ li:hover {
 
 /* Style for selected topic */
 li.selected {
-  color: #555; /* Darker grey color for selected topic */
+  color: #707070;
 }
 </style>
