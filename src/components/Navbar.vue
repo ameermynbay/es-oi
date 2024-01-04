@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiService from '@/services/apiService'; // Adjust the import path as needed
 
 export default {
   name: 'AppNavbar',
@@ -22,14 +22,12 @@ export default {
     };
   },
   mounted() {
-    // Fetch subjects from the API
     this.fetchSubjects();
   },
   methods: {
     async fetchSubjects() {
       try {
-        const response = await axios.get('http://localhost:3001/subjects');
-        // Assuming the API response is an array of subjects
+        const response = await apiService.getSubjects();
         this.navbarItems = response.data.map(subject => ({
           id: subject.id,
           label: subject.name,
@@ -39,7 +37,6 @@ export default {
       }
     },
     selectSubject(subjectId) {
-      // Emit an event to notify the parent component (App.vue) about the selected subject
       this.$emit('subjectSelected', subjectId);
       this.selectedSubject = subjectId;
     },

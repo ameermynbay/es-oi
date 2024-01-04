@@ -21,7 +21,7 @@
 import AppNavbar from './components/Navbar.vue';
 import TopicList from './components/TopicList.vue';
 import TopicVideoPlayer from './components/TopicVideoPlayer.vue';
-import axios from 'axios';
+import apiService from '@/services/apiService'; // Adjust the import path as needed
 
 export default {
   name: 'TopicScreen',
@@ -40,7 +40,7 @@ export default {
   methods: {
     updateSelectedSubject(subjectId, subjectName) {
       this.selectedSubjectId = subjectId;
-      this.selectedVideoLink = null; // Reset the selected video link when the subject changes
+      this.selectedVideoLink = null;
       this.selectedSubjectName = subjectName;
     },
     playTopic(topic) {
@@ -49,10 +49,9 @@ export default {
     },
     async fetchTopicDetails(topicId) {
       try {
-        const response = await axios.get(`http://localhost:3001/topics/${topicId}`);
-        const { name, link } = response.data;
-        this.selectedSubjectName = name;
-        this.selectedVideoLink = link;
+        const response = await apiService.getTopic(topicId);
+        this.selectedSubjectName = response.data.title;
+        this.selectedVideoLink = response.data.link;
       } catch (error) {
         console.error('Error fetching topic details:', error);
       }
@@ -60,13 +59,11 @@ export default {
   },
   watch: {
     $route(to) {
-      // Update selectedSubjectId and fetch topic details when the route changes
       this.selectedSubjectId = to.params.subjectId;
       this.fetchTopicDetails(to.params.topicId);
     },
   },
   beforeRouteUpdate(to, from, next) {
-    // Ensure the route is updated before fetching topic details
     this.selectedSubjectId = to.params.subjectId;
     this.fetchTopicDetails(to.params.topicId);
     next();

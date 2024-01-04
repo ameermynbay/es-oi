@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiService from '@/services/apiService'; // Adjust the import path as needed
 
 export default {
   name: 'TopicList',
@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       topics: [],
-      selectedTopic: null, // Track the selected topic
+      selectedTopic: null,
     };
   },
   watch: {
@@ -32,18 +32,15 @@ export default {
   methods: {
     async fetchTopics(subjectId) {
       try {
-        const response = await axios.get(`http://localhost:3001/topics?subjectId=${subjectId}`);
-        this.topics = response.data.map(topic => ({
-          id: topic.id,
-          title: topic.title,
-          link: topic.link,
-        }));
+        // Assuming the API endpoint can filter topics by subjectId
+        const response = await apiService.getTopicsBySubject(subjectId);
+        this.topics = response.data;
       } catch (error) {
         console.error('Error fetching topics:', error);
       }
     },
     selectTopic(topic) {
-      this.selectedTopic = topic; // Update the selected topic
+      this.selectedTopic = topic;
       this.$emit('topicSelected', topic);
     },
   },
