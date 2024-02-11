@@ -29,4 +29,8 @@ export default {
     return apiClient.get(`topics?subjectId=${subjectId}`);
   },
 
+  getSubject(subjectId) {
+    return apiClient.get(`subjects/${subjectId}`);
+  },
+
 };

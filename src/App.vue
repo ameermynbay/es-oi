@@ -1,15 +1,21 @@
 <template>
-  <div class="topic-screen">
-    <AppNavbar @subjectSelected="updateSelectedSubject" />
+  <div class="whole-screen">
+    <AppNavbar @subjectSelected="updateSelectedSubject" @toggle-topic-list="toggleTopicListVisibility" />
 
-    <div class="content-container">
-      <div class="topic-content">
+    <div class="under-nav">
+      <div class="main-content">
+
+        <TopicList 
+          :subjectId="selectedSubjectId" 
+          @topicSelected="playTopic" 
+          v-if="topicListVisible && selectedSubjectId" 
+        />
+
         <TopicVideoPlayer
           :selectedVideoLink="selectedVideoLink"
           :selectedSubjectName="selectedSubjectName"
         />
 
-        <TopicList :subjectId="selectedSubjectId" @topicSelected="playTopic" v-if="selectedSubjectId" />
       </div>
 
       <router-view></router-view>
@@ -35,9 +41,11 @@ export default {
       selectedSubjectId: null,
       selectedVideoLink: null,
       selectedSubjectName: null,
+      topicListVisible: false,
     };
   },
   methods: {
+    
     updateSelectedSubject(subjectId, subjectName) {
       this.selectedSubjectId = subjectId;
       this.selectedVideoLink = null;
@@ -56,6 +64,21 @@ export default {
         console.error('Error fetching topic details:', error);
       }
     },
+    adjustTopicListVisibility() {
+      if (window.innerWidth >= 768 || (window.innerHeight <= 575.98 && window.matchMedia("(orientation: landscape)").matches)) {
+        this.topicListVisible = true;
+      }
+    },
+    toggleTopicListVisibility() {
+      this.topicListVisible = !this.topicListVisible;
+    },
+  },
+  mounted() {
+    this.adjustTopicListVisibility(); // Adjust visibility on mount
+    window.addEventListener('resize', this.adjustTopicListVisibility); // Adjust visibility on window resize
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.adjustTopicListVisibility); // Clean up event listener
   },
   watch: {
     $route(to) {
@@ -72,54 +95,72 @@ export default {
 </script>
 
 <style>
-/* Import the Roboto font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* Apply the Roboto font to the entire application */
 body {
   font-family: 'Roboto', sans-serif;
-  color: black; /* Set the default text color */
+  color: black; 
   margin: 0%;
 }
 
 a {
-  color: black; /* Set the link color */
+  color: black;
   text-decoration: none; /* Remove the underline on links */
 }
 
 a:hover {
-  color: #555; /* Change the link color on hover if desired */
+  color: #555;
 }
 
-.topic-screen {
+.whole-screen {
   display: flex;
   flex-direction: column; /* Make the main container a column layout */
   height: 100vh; /* Set the height to 100% of the viewport */
-  margin: 0 3%; /* Add 5% margin on both sides */
 }
 
-.content-container {
+.under-nav {
   display: flex;
   flex: 1; /* Take up all available space in the main container */
 }
 
 .topic-video-player {
-  flex: 1; /* Take up all available space in the left */
-  margin-right: 10px; /* Add some margin between TopicVideoPlayer and TopicList */
+  flex: 1;
 }
 
-.topic-content {
+.main-content {
+  position: relative;
   display: flex;
-  flex: 1; /* Take up all available space in the content container */
+  flex: 1; 
 }
 
-.topic-list {
-  background-color: #f0f0f0;
-  width: 200px;
-  height: 100%;
-  overflow-y: auto;
-  margin-left: auto; /* Push TopicList to the most right side */
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
 }
 
-/* Other styles remain unchanged */
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+@media only screen and (max-height: 575.98px) and (orientation: landscape) {
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}
+
+
 </style>

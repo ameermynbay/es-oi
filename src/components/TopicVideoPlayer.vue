@@ -1,16 +1,19 @@
 <template>
-  <div class="topic-video-player">
-    <div v-if="selectedVideoLink" class="video-content">
-      <div class="video-container">
-        <iframe :src="selectedVideoLink" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+  <div class="main-container">
+    <div v-if="selectedVideoLink" class="main-container-child">
+      <div class="video-and-title-container"> 
+        <div class="video-container">
+          <iframe :src="selectedVideoLink" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <h2 class="title">{{ selectedSubjectName }}</h2>
       </div>
-      <h2 class="selected-subject">{{ selectedSubjectName }}</h2>
     </div>
     <div v-else class="centered-text">
       <h1>Es-Oi</h1>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -23,39 +26,74 @@ export default {
 </script>
 
 <style scoped>
-.topic-video-player {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* Align items to the start (left) */
-  justify-content: flex-start; /* Align items to the start (top) */
-  height: 100vh; /* Take up full height of the viewport */
+h2 {
+  display: block;
+}
+.main-container{
+  width: 100%;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  max-height: calc(100vh - 50px);
+  overflow-y: auto;
 }
 
-.video-content {
+.video-and-title-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align items to the start (left) */
-}
-
-.centered-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center items horizontally */
-  justify-content: center; /* Center items vertically */
-  height: 100%; /* Take up full height of the container */
-}
-
-.centered-text h1 {
-  margin: 0; /* Remove default margin for h1 */
 }
 
 .video-container {
-  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
 }
 
-.selected-subject {
-  font-weight: bold;
-  color: #333;
-  margin-top: 10px; /* Add margin to separate from the video container */
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
+
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+@media only screen and (max-height: 575.98px) and (orientation: landscape) {
+  .main-container{
+    padding: 24px 30px;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .main-container{
+    padding: 24px 30px;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .main-container{
+    max-height: calc(100vh - 70px);
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  
+}
+
+
 </style>

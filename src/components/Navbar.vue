@@ -1,17 +1,24 @@
 <template>
   <nav>
-    <ul class="horizontal-navbar">
-      <li v-for="item in navbarItems" :key="item.id">
-        <router-link :to="`/subjects/${item.id}`" @click="selectSubject(item.id)" class="navbar-link" :class="{ 'active': selectedSubject === item.id }">
-          {{ item.label }}
-        </router-link>
-      </li>
-    </ul>
+    <div class="navbar-container">
+      <button class="hamburger-btn" @click="toggleTopicList">&#9776;</button>
+
+      <div class="dropdown">
+        <button class="dropbtn">{{ selectedSubjectLabel }}</button>
+        <div class="dropdown-content">
+          <a v-for="item in navbarItems" :key="item.id" @click="selectSubject(item.id)" :class="{ 'active': selectedSubject === item.id }">
+            {{ item.label }}
+          </a>
+        </div>
+      </div>
+      
+    </div>
   </nav>
 </template>
 
+
 <script>
-import apiService from '@/services/apiService'; // Adjust the import path as needed
+import apiService from '@/services/apiService';
 
 export default {
   name: 'AppNavbar',
@@ -21,9 +28,20 @@ export default {
       selectedSubject: null,
     };
   },
-  mounted() {
-    this.fetchSubjects();
+  computed: {
+    selectedSubjectLabel() {
+      const selectedItem = this.navbarItems.find(item => item.id === this.selectedSubject);
+      return selectedItem ? selectedItem.label : '';
+    },
   },
+  mounted() {
+  this.fetchSubjects().then(() => {
+    if (this.navbarItems.length > 0) {
+      this.selectedSubject = this.navbarItems[0].id; // Set the first item as selected by default
+    }
+  });
+},
+
   methods: {
     async fetchSubjects() {
       try {
@@ -32,55 +50,124 @@ export default {
           id: subject.id,
           label: subject.name,
         }));
+        if (this.navbarItems.length > 0) {
+          this.selectedSubject = this.navbarItems[0].id; // Set first item as selected by default
+          this.$emit('subjectSelected', this.navbarItems[0].id)
+        }
       } catch (error) {
         console.error('Error fetching subjects:', error);
       }
     },
-    selectSubject(subjectId) {
-      this.$emit('subjectSelected', subjectId);
-      this.selectedSubject = subjectId;
+    selectSubject(id) {
+      this.selectedSubject = id;
+      this.$emit('subjectSelected', id); // Emitting an event with the selected subject ID
+    },
+    toggleTopicList() {
+      this.$emit('toggle-topic-list');
     },
   },
 };
 </script>
 
-<style scoped>
-.horizontal-navbar {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex; /* Use flexbox to make the list items display horizontally */
+
+<style>
+nav {
+  height: 50px;
+}
+.navbar-container {
+  display: flex;
+  justify-content: flex-start; 
+  align-items: center;
+  border-bottom: thin solid #bebebe;
+  height: 50px;
 }
 
-.horizontal-navbar li {
-  display: inline;
-}
-
-
-.navbar-link {
-  font-size: 1.2em; /* Adjust the font size as needed */
-  padding: 1em 1.5em; /* Add padding on all sides to make it look like a button */
-  text-decoration: none;
-  color: #333;
+.dropdown {
   position: relative;
-  display: flex; /* Use flexbox */
-  align-items: center; /* Center vertically */
+  display: inline-block;
+  height: 100%;
 }
 
-
-.navbar-link:hover {
-  background-color: #f0f0f0; /* Change background color on hover if desired */
+.dropbtn {
+  background-color: rgb(244 130 37);
+  color: white;
+  height: 100%;
+  font-size: 16px;
+  min-width: 160px;
+  border: none;
+  cursor: pointer;
 }
 
-.navbar-link.active::after {
-  content: '';
-  display: block;
+.dropdown-content {
+  display: none;
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 7%;
-  background-color: black; /* Color of the line for the active subject */
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: rgb(233 111 10);
+}
+
+
+
+.hamburger-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+@media only screen and (max-height: 575.98px) and (orientation: landscape) {
+  .hamburger-btn{
+    display: none;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .hamburger-btn{
+    display: none;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .navbar-container{
+    height: 70px;
+  }
+  nav {
+    height: 70px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  
 }
 </style>
