@@ -5,7 +5,9 @@
         <div class="video-container">
           <iframe :src="selectedVideoLink" width="640" height="360" frameborder="0" allowfullscreen></iframe>
         </div>
-        <h2 class="title">{{ selectedSubjectName }}</h2>
+        <div class = "title-container">
+          <span class="title">{{ selectedSubjectName }}</span>
+        </div>
       </div>
     </div>
     <div v-else class="centered-text">
@@ -26,14 +28,15 @@ export default {
 </script>
 
 <style scoped>
-h2 {
+.title-container span {
   display: block;
+  font-size: 16px;
 }
 .main-container{
   width: 100%;
   padding: 24px 16px;
   box-sizing: border-box;
-  max-height: calc(100vh - 50px);
+  max-height: calc(100vh - 60px);
   overflow-y: auto;
 }
 
@@ -70,24 +73,21 @@ h2 {
 
 }
 
-@media only screen and (max-height: 575.98px) and (orientation: landscape) {
-  .main-container{
-    padding: 24px 30px;
-  }
-}
+
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
   .main-container{
-    padding: 24px 30px;
+    padding: 24px 48px;
+  }
+  .title-container span{
+    font-size: 24px;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  .main-container{
-    max-height: calc(100vh - 70px);
-  }
+  
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */

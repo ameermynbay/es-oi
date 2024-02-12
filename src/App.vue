@@ -65,7 +65,7 @@ export default {
       }
     },
     adjustTopicListVisibility() {
-      if (window.innerWidth >= 768 || (window.innerHeight <= 575.98 && window.matchMedia("(orientation: landscape)").matches)) {
+      if (window.innerWidth >= 768) {
         this.topicListVisible = true;
       }
     },
@@ -103,15 +103,6 @@ body {
   margin: 0%;
 }
 
-a {
-  color: black;
-  text-decoration: none; /* Remove the underline on links */
-}
-
-a:hover {
-  color: #555;
-}
-
 .whole-screen {
   display: flex;
   flex-direction: column; /* Make the main container a column layout */
@@ -123,44 +114,27 @@ a:hover {
   flex: 1; /* Take up all available space in the main container */
 }
 
-.topic-video-player {
-  flex: 1;
-}
-
 .main-content {
   position: relative;
   display: flex;
   flex: 1; 
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
 
+a {
+  color: black;
+  text-decoration: none; /* Remove the underline on links */
 }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-
+a:hover {
+  color: #555;
 }
 
-@media only screen and (max-height: 575.98px) and (orientation: landscape) {
 
-}
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
 
-}
 
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
 
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-
-}
 
 
 </style>

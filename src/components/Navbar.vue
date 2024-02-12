@@ -1,8 +1,10 @@
 <template>
   <nav>
     <div class="navbar-container">
-      <button class="hamburger-btn" @click="toggleTopicList">&#9776;</button>
-
+      <div class="hamburger-btn-container">
+        <button class="hamburger-btn" @click="toggleTopicList">&#9776;</button>
+      </div>
+      
       <div class="dropdown">
         <button class="dropbtn">{{ selectedSubjectLabel }}</button>
         <div class="dropdown-content">
@@ -72,14 +74,17 @@ export default {
 
 <style>
 nav {
-  height: 50px;
+  height: 60px;
+  border-bottom: thin solid #bebebe;
 }
 .navbar-container {
+  /* max-width: 1264px;
+  margin: 0 auto; */
   display: flex;
   justify-content: flex-start; 
   align-items: center;
-  border-bottom: thin solid #bebebe;
-  height: 50px;
+  height: 60px;
+  /* width: 100%; */
 }
 
 .dropdown {
@@ -92,19 +97,20 @@ nav {
   background-color: rgb(244 130 37);
   color: white;
   height: 100%;
+  min-width: 140px;
   font-size: 16px;
-  min-width: 160px;
   border: none;
   cursor: pointer;
 }
 
 .dropdown-content {
   display: none;
+  min-width: 140px;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1000;
+  font-size: 16px;
 }
 
 .dropdown-content a {
@@ -125,45 +131,28 @@ nav {
 }
 
 
-
+.hamburger-btn-container{
+  display: flex;
+  justify-content: center; /* Aligns horizontally center */
+  align-items: center;
+  height: 100%;
+  width: 60px;
+}
 .hamburger-btn {
   background-color: transparent;
   border: none;
   font-size: 24px;
-  cursor: pointer;
-}
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-
-}
-
-@media only screen and (max-height: 575.98px) and (orientation: landscape) {
-  .hamburger-btn{
-    display: none;
-  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  .hamburger-btn{
+  .hamburger-btn-container{
     display: none;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  .navbar-container{
-    height: 70px;
-  }
-  nav {
-    height: 70px;
-  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
