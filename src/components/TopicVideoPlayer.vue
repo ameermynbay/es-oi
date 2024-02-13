@@ -28,10 +28,6 @@ export default {
 </script>
 
 <style scoped>
-.title-container span {
-  display: block;
-  font-size: 16px;
-}
 .main-container{
   width: 100%;
   padding: 24px 16px;
@@ -60,20 +56,16 @@ export default {
   height: 100%;
 }
 
-
-
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-
+.title-container {
+  /* width: 100%; */
+  padding: 16px 0;
 }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-
+.title-container span {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
 }
-
-
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {

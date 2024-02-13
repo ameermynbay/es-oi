@@ -1,9 +1,17 @@
 <template>
   <div class="list-container">
-    <span>Topics</span>
     <ul>
-      <li v-for="topic in topics" :key="topic.id" @click="selectTopic(topic)" :class="{ 'selected': topic === selectedTopic }">
-        {{ topic.title }}
+      <li
+        v-for="topic in topics"
+        :key="topic.id"
+        @click="handleClick(topic)"
+        :class="{ 'selected': topic === selectedTopic }"
+      >
+        <div class="li-container">
+          <span class="li-topic-title">
+            {{ topic.title }}
+          </span>
+        </div>
       </li>
     </ul>
   </div>
@@ -42,6 +50,10 @@ export default {
       this.selectedTopic = topic;
       this.$emit('topicSelected', topic);
     },
+    handleClick(topic) {
+      this.selectTopic(topic);
+      this.$emit('updateHamburgerMenu', false); // Emitting an event
+    }
   },
 };
 </script>
@@ -50,7 +62,6 @@ export default {
 .list-container {
   position: absolute;
   z-index: 100;
-  padding: 5px 15px 30px 15px;
   background-color: #fff;
   border-right: thin solid #bebebe;
   /*box-shadow: 1px 1px 10px rgba(211, 211, 211, 0.5);*/
@@ -61,37 +72,35 @@ export default {
   width: 100vw;
 }
 
-
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-span {
-  display: inline-block;
-  margin-top: 22px;
-  margin-bottom: 0.5em;
-  font-size: 1.1em;
-  font-weight: bold;
-}
-
 li {
-  margin-bottom: 10px;
   cursor: pointer; /* Set cursor to pointer during hover */
-  transition: color 0.3s; /* Smooth color transition */
+  transition: background-color 0.3s; /* Smooth color transition */
+  background-color: #fff;
 }
 
 li:hover {
-  text-decoration: underline;
+  background-color: #f5f5f5;
 }
 
 li.selected {
-  color: #707070;
+  background-color: #f5f5f5;
 }
 
+.li-container{
+  border-bottom: thin solid #bebebe;
+  padding: 16px;
+}
 
-
+.li-topic-title{
+  font-size: 16px;
+  font-weight: 600;
+}
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {

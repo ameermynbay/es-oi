@@ -2,7 +2,7 @@
   <nav>
     <div class="navbar-container">
       <div class="hamburger-btn-container">
-        <button class="hamburger-btn" @click="toggleTopicList">&#9776;</button>
+        <button class="hamburger-btn" @click="toggleHamburger">&#9776;</button>
       </div>
       
       <div class="dropdown">
@@ -64,8 +64,8 @@ export default {
       this.selectedSubject = id;
       this.$emit('subjectSelected', id); // Emitting an event with the selected subject ID
     },
-    toggleTopicList() {
-      this.$emit('toggle-topic-list');
+    toggleHamburger() {
+      this.$emit('toggle-hamburger-button');
     },
   },
 };
@@ -76,6 +76,7 @@ export default {
 nav {
   height: 60px;
   border-bottom: thin solid #bebebe;
+  background-color: #f5f5f5;
 }
 .navbar-container {
   /* max-width: 1264px;
@@ -99,6 +100,7 @@ nav {
   height: 100%;
   min-width: 140px;
   font-size: 16px;
+  font-weight: bold;
   border: none;
   cursor: pointer;
 }
@@ -111,11 +113,12 @@ nav {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1000;
   font-size: 16px;
+  font-weight: bold;
 }
 
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
+  padding: 16px;
   text-decoration: none;
   display: block;
 }

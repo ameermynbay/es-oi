@@ -1,6 +1,6 @@
 <template>
   <div class="whole-screen">
-    <AppNavbar @subjectSelected="updateSelectedSubject" @toggle-topic-list="toggleTopicListVisibility" />
+    <AppNavbar @subjectSelected="updateSelectedSubject" @toggle-hamburger-button="toggleHamburgerButton" />
 
     <div class="under-nav">
       <div class="main-content">
@@ -8,7 +8,8 @@
         <TopicList 
           :subjectId="selectedSubjectId" 
           @topicSelected="playTopic" 
-          v-if="topicListVisible && selectedSubjectId" 
+          @updateHamburgerMenu="handleHamburgerMenuUpdate"
+          v-if="hamburgerMenuOpen && selectedSubjectId" 
         />
 
         <TopicVideoPlayer
@@ -41,7 +42,7 @@ export default {
       selectedSubjectId: null,
       selectedVideoLink: null,
       selectedSubjectName: null,
-      topicListVisible: false,
+      hamburgerMenuOpen: false,
     };
   },
   methods: {
@@ -64,21 +65,26 @@ export default {
         console.error('Error fetching topic details:', error);
       }
     },
-    adjustTopicListVisibility() {
+    adjustHamburgerMenu() {
       if (window.innerWidth >= 768) {
-        this.topicListVisible = true;
+        this.hamburgerMenuOpen = true;
+      } else {
+        this.hamburgerMenuOpen = false;
       }
     },
-    toggleTopicListVisibility() {
-      this.topicListVisible = !this.topicListVisible;
+    toggleHamburgerButton() {
+      this.hamburgerMenuOpen = !this.hamburgerMenuOpen;
     },
+    handleHamburgerMenuUpdate(value) {
+      this.hamburgerMenuOpen = value; // Assuming hamburgerMenuOpen is part of App.vue's data
+    }
   },
   mounted() {
-    this.adjustTopicListVisibility(); // Adjust visibility on mount
-    window.addEventListener('resize', this.adjustTopicListVisibility); // Adjust visibility on window resize
+    this.adjustHamburgerMenu(); // Adjust visibility on mount
+    window.addEventListener('resize', this.adjustHamburgerMenu); // Adjust visibility on window resize
   },
   beforeUnmount() {
-    window.removeEventListener('resize', this.adjustTopicListVisibility); // Clean up event listener
+    window.removeEventListener('resize', this.adjustHamburgerMenu); // Clean up event listener
   },
   watch: {
     $route(to) {
