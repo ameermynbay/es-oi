@@ -1,6 +1,7 @@
 <template>
   <div class="whole-screen">
-    <AppNavbar @subjectSelected="updateSelectedSubject" @toggle-hamburger-button="toggleHamburgerButton" />
+    <AppNavbar @subjectSelected="updateSelectedSubject" @toggle-hamburger="toggleHamburgerButton" :is-menu-open="isMenuOpen" />
+
 
     <div class="under-nav">
       <div class="main-content">
@@ -9,12 +10,12 @@
           :subjectId="selectedSubjectId" 
           @topicSelected="playTopic" 
           @updateHamburgerMenu="handleHamburgerMenuUpdate"
-          v-if="hamburgerMenuOpen && selectedSubjectId" 
+          v-if="isMenuOpen && selectedSubjectId" 
         />
 
         <TopicVideoPlayer
           :selectedVideoLink="selectedVideoLink"
-          :selectedSubjectName="selectedSubjectName"
+          :selectedTopicTitle="selectedTopicTitle"
         />
 
       </div>
@@ -41,25 +42,22 @@ export default {
     return {
       selectedSubjectId: null,
       selectedVideoLink: null,
-      selectedSubjectName: null,
-      hamburgerMenuOpen: false,
+      selectedTopicTitle: null,
+      isMenuOpen: false,
     };
   },
   methods: {
-    
-    updateSelectedSubject(subjectId, subjectName) {
+    updateSelectedSubject(subjectId) {
       this.selectedSubjectId = subjectId;
-      this.selectedVideoLink = null;
-      this.selectedSubjectName = subjectName;
     },
     playTopic(topic) {
       this.selectedVideoLink = topic.link;
-      this.selectedSubjectName = topic.title;
+      this.selectedTopicTitle = topic.title;
     },
     async fetchTopicDetails(topicId) {
       try {
         const response = await apiService.getTopic(topicId);
-        this.selectedSubjectName = response.data.title;
+        this.selectedTopicTitle = response.data.title;
         this.selectedVideoLink = response.data.link;
       } catch (error) {
         console.error('Error fetching topic details:', error);
@@ -67,16 +65,16 @@ export default {
     },
     adjustHamburgerMenu() {
       if (window.innerWidth >= 768) {
-        this.hamburgerMenuOpen = true;
+        this.isMenuOpen = true;
       } else {
-        this.hamburgerMenuOpen = false;
+        this.isMenuOpen = false;
       }
     },
     toggleHamburgerButton() {
-      this.hamburgerMenuOpen = !this.hamburgerMenuOpen;
+      this.isMenuOpen = !this.isMenuOpen;
     },
     handleHamburgerMenuUpdate(value) {
-      this.hamburgerMenuOpen = value; // Assuming hamburgerMenuOpen is part of App.vue's data
+      this.isMenuOpen = value;
     }
   },
   mounted() {

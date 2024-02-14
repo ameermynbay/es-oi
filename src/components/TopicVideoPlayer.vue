@@ -6,7 +6,7 @@
           <iframe :src="selectedVideoLink" width="640" height="360" frameborder="0" allowfullscreen></iframe>
         </div>
         <div class = "title-container">
-          <span class="title">{{ selectedSubjectName }}</span>
+          <span class="title">{{ selectedTopicTitle }}</span>
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'TopicVideoPlayer',
-  props: ['selectedVideoLink', 'selectedSubjectName'],
+  props: ['selectedVideoLink', 'selectedTopicTitle'],
   methods: {
     // Add any methods related to the video player component if needed
   },

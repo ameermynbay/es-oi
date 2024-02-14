@@ -52,7 +52,9 @@ export default {
     },
     handleClick(topic) {
       this.selectTopic(topic);
-      this.$emit('updateHamburgerMenu', false); // Emitting an event
+      if (window.innerWidth <= 768) {
+        this.$emit('updateHamburgerMenu', false); // Emitting an event
+      }
     }
   },
 };

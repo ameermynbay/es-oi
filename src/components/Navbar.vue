@@ -2,7 +2,9 @@
   <nav>
     <div class="navbar-container">
       <div class="hamburger-btn-container">
-        <button class="hamburger-btn" @click="toggleHamburger">&#9776;</button>
+        <button class="hamburger-btn" @click="toggleHamburger">
+          {{ isMenuOpen ? '&times;' : '&#9776;' }}
+        </button>
       </div>
       
       <div class="dropdown">
@@ -24,6 +26,7 @@ import apiService from '@/services/apiService';
 
 export default {
   name: 'AppNavbar',
+  props: ['isMenuOpen'],
   data() {
     return {
       navbarItems: [],
@@ -65,8 +68,9 @@ export default {
       this.$emit('subjectSelected', id); // Emitting an event with the selected subject ID
     },
     toggleHamburger() {
-      this.$emit('toggle-hamburger-button');
+      this.$emit('toggle-hamburger'); // Just emit an event, don't toggle directly
     },
+
   },
 };
 </script>
