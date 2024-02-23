@@ -26,7 +26,7 @@ export default {
   },
 
   getTopicsBySubject(subjectId) {
-    return apiClient.get(`topics?subjectId=${subjectId}`);
+    return apiClient.get(`subjects/${subjectId}/topics`);
   },
 
   getSubject(subjectId) {

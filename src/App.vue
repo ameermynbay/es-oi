@@ -8,7 +8,7 @@
 
         <TopicList 
           :subjectId="selectedSubjectId" 
-          @topicSelected="playTopic" 
+          @topicSelected="updateTopic" 
           @updateHamburgerMenu="handleHamburgerMenuUpdate"
           v-if="isMenuOpen && selectedSubjectId" 
         />
@@ -50,7 +50,7 @@ export default {
     updateSelectedSubject(subjectId) {
       this.selectedSubjectId = subjectId;
     },
-    playTopic(topic) {
+    updateTopic(topic) {
       this.selectedVideoLink = topic.link;
       this.selectedTopicTitle = topic.title;
     },
